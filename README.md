@@ -4,13 +4,18 @@
 [![Travis](https://img.shields.io/travis/kalimeromk/filterable.svg?style=flat-square)]()
 [![Total Downloads](https://img.shields.io/packagist/dt/kalimeromk/filterable.svg?style=flat-square)](https://packagist.org/packages/kalimeromk/filterable)
 
+#### In Laravel, we commonly face the problem of adding repetitive filtering code, this package will address this problem.
+
 ## Install
+
 `composer require kalimeromk/filterable`
 
 ## Usage
+
 Write a few lines about the usage of this package.
 
 ## Testing
+
 Run the tests with:
 
 ``` bash
