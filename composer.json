@@ -1,0 +1,41 @@
+{
+    "name": "kalimeromk/filterable",
+    "description": "A description for filterable.",
+    "type": "package",
+    "license": "MIT",
+    "keywords": [
+        "laravel"
+    ],
+    "authors": [
+        {
+            "name": "kalimeromk",
+            "email": "zbogoevski@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/support": "^7.0|^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kalimeromk\\Filterable\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kalimeromk\\Filterable\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kalimeromk\\Filterable\\FilterableServiceProvider"
+            ]
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0"
+    }
+}
