@@ -12,7 +12,7 @@
 
 ## Usage
 
-Write a few lines about the usage of this package.dasa
+Write a few lines about the usage of this package.
 
 ## Testing
 
