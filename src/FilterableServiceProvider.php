@@ -15,7 +15,6 @@
         {
             $this->publishes([
                 __DIR__.'/Trait/Filterable.php' => app_path('/Trait/Filter.php'),
-                __DIR__.'/Models/Filter.php'    => app_path('/Models/Filter.php'),
             ]);
         }
 
