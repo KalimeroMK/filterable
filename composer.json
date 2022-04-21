@@ -1,6 +1,6 @@
 {
     "name": "kalimeromk/filterable",
-    "description": "A description for filterable.",
+    "description": "Address commonly face the problem of adding repetitive filtering code",
     "type": "package",
     "license": "MIT",
     "keywords": [
