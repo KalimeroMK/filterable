@@ -1,6 +1,6 @@
 <?php
 
-    namespace Kalimeromk\Filterable;
+    namespace Kalimeromk\Filterable\Trait;
 
     trait Filterable
     {
