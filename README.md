@@ -84,6 +84,81 @@ class UsersController extends Controller
 	}
 }
 ```
+
+## Introduction
+
+This post aims to provide a simple example of how to use traits with Laravel Query Scopes. The trait will sort columns
+based on "sort" and "direction" being found within the request.
+The end result looks like this with a Post model as an example:
+
+```
+Post::sort(request())
+```
+
+### Model setup
+
+The model setup requires 2 things:
+
+1. Add a `use Sortable;` statement
+2. Add a `sortable` public property which is an array of values that may be sorted
+
+Example below allows sorting for the columns: id, views, published_at
+
+```
+<?php
+
+namespace App;
+
+use Kalimeromk\Filterable\Trait\Sortable;
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    use Sortable;
+
+    public $sortables = ['id', 'views', 'published_at'];
+}
+```
+
+### Trait usage
+
+Below is an example of the usage of the sortable trait (query scope).
+
+```
+<?php
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Http\Request;
+
+class UsersController extends Controller
+{
+	protected $model;
+  
+	public function __construct(User $model)
+	{
+		$this->model = $model;
+	}
+  
+	public function index(Request $request)
+	{
+		$users = $this->model
+                  ->sort($request->all())
+                  ->get();
+		
+		return view('users.index', compact('users'));
+	}
+}
+```
+
+NOTE: This also works with filter and with
+pagination `$users = $this->model->sort($request->all())->filter()->paginate(10)`
+
+### Resources
+
+* [Laravel Query Scopes - Local Scopes](https://laravel.com/docs/5.5/eloquent#local-scopes)
+
 ## Testing
 
 Run the tests with:
