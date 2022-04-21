@@ -31,7 +31,6 @@ $likeFields: Add the list of fields on which you want to apply “LIKE” filter
 ```
 $boolFields:- Add fields on which you want to apply Boolean filtering.
 ```
-
 ## Examples
 
 ``` 
