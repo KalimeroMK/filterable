@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Kalimeromk\\Filterable\\": "src"
+            "Kalimeromk\\Filterable\\": "src/Trait"
         }
     },
     "autoload-dev": {
