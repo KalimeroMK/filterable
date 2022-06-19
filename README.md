@@ -4,13 +4,13 @@
 [![Travis](https://img.shields.io/travis/kalimeromk/filterable.svg?style=flat-square)]()
 [![Total Downloads](https://img.shields.io/packagist/dt/kalimeromk/filterable.svg?style=flat-square)](https://packagist.org/packages/kalimeromk/filterable)
 
-#### In Laravel, we commonly face the problem of adding repetitive filtering code, this package will address this problem.
+#### In Laravel, we commonly face the problem of adding repetitive filtering code, sorting and search as well this package will address this problem.
 
 ## Install
 
 `composer require kalimeromk/filterable`
 
-## Usage
+## Usage for Filtering property
 
 #### To use Filterable trait we need to include trait into our model
 
@@ -18,15 +18,12 @@
 Use Filterable;
 ```
 
-#### While adding Filterable trait in the model class, we need to add some properties.
+#### While adding Filterable trait in the model class, we need to add some properties as well.
 
 ```
-$fillable: Specify all the fields which exist in your database(add if not exist).
+$fillable: Specify all the fields which exist in your table.
 ```
 
-```
-$likeFields: Add the list of fields on which you want to apply “LIKE” filtering. Like the name, email, address ...
-```
 
 ```
 $boolFields:- Add fields on which you want to apply Boolean filtering.
@@ -34,20 +31,14 @@ $boolFields:- Add fields on which you want to apply Boolean filtering.
 ## Examples
 
 ``` 
-        protected $fillable = [
+        protected array $fillable = [
             'name',
             'email',
             'address',
         ];
 ```
 
-```
-        protected array $likeFields = [
-            'name',
-            'email',
-            'address',
-        ];
-```
+
 
 ```
         protected array $boolFields = [
@@ -85,24 +76,34 @@ class UsersController extends Controller
 }
 ```
 
-## Introduction
+## Usage for Sort property
 
-This post aims to provide a simple example of how to use traits with Laravel Query Scopes. The trait will sort columns
-based on "sort" and "direction" being found within the request.
-The end result looks like this with a Post model as an example:
+#### To use Sortable trait we need to include trait into our model
 
-```
-Post::sort(request())
+``` bash
+Use Sortable;
 ```
 
-### Model setup
+#### While adding Sortable trait in the model class, we need to add some properties as well.
 
-The model setup requires 2 things:
+```
+$sortable:- Add fields on which you want to apply sort property.
+```
 
-1. Add a `use Sortable;` statement
-2. Add a `sortable` public property which is an array of values that may be sorted
+## Examples
 
-Example below allows sorting for the columns: id, views, published_at
+``` 
+        protected array $sortable = [
+            'id',
+            'name',
+            'email',
+            'address'
+        ];
+```
+
+#### After all the above changes, now we only need to call sort() function with Request array data
+
+Example below allows sorting for the columns: id, name, email, address
 
 ```
 <?php
@@ -116,7 +117,7 @@ class User extends Model
 {
     use Sortable;
 
-    public $sortables = ['id', 'views', 'published_at'];
+    public $sortables = ['id', 'name', 'email', 'address'];
 }
 ```
 
@@ -152,12 +153,95 @@ class UsersController extends Controller
 }
 ```
 
-NOTE: This also works with filter and with
-pagination `$users = $this->model->sort($request->all())->filter()->paginate(10)`
+## Usage for whereLike property
 
-### Resources
+#### To use whereLike search need first to specified all the table row you want to search try
 
-* [Laravel Query Scopes - Local Scopes](https://laravel.com/docs/5.5/eloquent#local-scopes)
+```
+$likeRows:- Add fields on which you want to apply whereLike property.
+```
+
+## Examples
+
+``` 
+    public const likeRows = [
+        'name',
+        'email',
+        'address'
+   ];
+```
+
+#### After all the above changes, now we only need to call whereLike() function with Request array data
+
+Example below allows searching for the columns: name, email, address
+
+```
+<?php
+
+namespace App;
+
+use Kalimeromk\Filterable\Trait\Sortable;
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    public const likeRows = [
+        'name',
+        'email',
+        'address'
+        ];
+}
+```
+
+this method can be used to search try relation as well just update const with relation and row name for search
+
+```bash
+ public const likeRows = [
+        'name',
+        'email',
+        'address',
+        'country.name'
+        ];
+```
+
+### whereLike usage
+
+Below is an example of the usage of the whereLike method (query scope).
+
+```
+<?php
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Http\Request;
+
+class UsersController extends Controller
+{
+	protected $model;
+  
+	public function __construct(User $model)
+	{
+		$this->model = $model;
+	}
+  
+	public function index(Request $request)
+	{
+		$users = $this->model
+                  ->whereLike(User::likeRows, Arr::get($request, 'search'))
+                  ->get();
+		
+		return view('users.index', compact('users'));
+	}
+}
+```
+
+NOTE: This also works with filter, sort and with
+pagination
+
+```bash
+$users = $this->model->whereLike(User::likeRows, Arr::get($request, 'search'))->sort($request->all())->filter($request->all())->paginate(10)
+```
 
 ## Testing
 
