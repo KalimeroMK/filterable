@@ -24,7 +24,9 @@
                     if ( ! in_array($field, $FillableFields) || ! $value) {
                         continue;
                     }
-                    if (in_array($field, $this->likeFields)) {
+                    if (in_array($field, $this->likeFields) && is_numeric($value)) {
+                        $builder->where($tableName.'.'.$field, 'LIKE', "$value");
+                    } elseif (in_array($field, $this->likeFields)) {
                         $builder->where($tableName.'.'.$field, 'LIKE', "%$value%");
                     } elseif (is_array($value)) {
                         $builder->whereIn($field, $value);
