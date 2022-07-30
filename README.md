@@ -1,7 +1,6 @@
 # Filterable
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Travis](https://img.shields.io/travis/kalimeromk/filterable.svg?style=flat-square)]()
 [![Total Downloads](https://img.shields.io/packagist/dt/kalimeromk/filterable.svg?style=flat-square)](https://packagist.org/packages/kalimeromk/filterable)
 
 #### In Laravel, we commonly face the problem of adding repetitive filtering code, sorting and search as well this package will address this problem.
