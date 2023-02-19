@@ -20,7 +20,7 @@ Use Filterable;
 #### While adding Filterable trait in the model class, we need to add some properties as well.
 
 ```
-$fillable: Specify all the fields which exist in your table.
+$getFillable: Specify all the fields which exist in your table.
 ```
 
 
@@ -30,7 +30,7 @@ $boolFields:- Add fields on which you want to apply Boolean filtering.
 ## Examples
 
 ``` 
-        protected array $fillable = [
+        protected array $getFillable = [
             'name',
             'email',
             'address',

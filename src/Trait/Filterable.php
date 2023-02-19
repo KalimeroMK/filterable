@@ -1,43 +1,40 @@
 <?php
 
-    namespace Kalimeromk\Filterable\Trait;
+namespace Kalimeromk\Filterable\Traits;
 
-    trait Filterable
+use Illuminate\Database\Eloquent\Builder;
+
+trait Filterable
+{
+    /**
+     * Add filtering to the query builder.
+     *
+     * @param Builder $query The query builder instance.
+     * @param array $filters Array of filters.
+     *
+     * @return Builder
+     */
+    public function scopeFilter($query, array $filters = [])
     {
-        /**
-         * add filtering.
-         *
-         * @param  $builder  : query builder.
-         * @param  array  $filters  : array of filters.
-         *
-         */
-        public function scopeFilter($builder, array $filters = [])
-        {
-            if ($filters) {
-                $tableName      = $this->getTable();
-                $FillableFields = $this->fillable;
-                foreach ($filters as $field => $value) {
-                    if (in_array($field, $this->boolFields) && $value != null) {
-                        $builder->where($field, (bool)$value);
-                        continue;
-                    }
-                    if ( ! in_array($field, $FillableFields) || ! $value) {
-                        continue;
-                    }
-                    if (in_array($field, $this->likeFields) && is_numeric($value)) {
-                        $builder->where($tableName.'.'.$field, 'LIKE', "$value");
-                    } elseif (in_array($field, $this->likeFields)) {
-                        $builder->where($tableName.'.'.$field, 'LIKE', "%$value%");
-                    } elseif (is_array($value)) {
-                        $builder->whereIn($field, $value);
-                    } else {
-                        $builder->where($field, $value);
-                    }
+        $tableName = $this->getTable();
+        $fillableFields = $this->getFillable();
+
+        foreach ($filters as $field => $value) {
+            if (in_array($field, $this->boolFields) && $value !== null) {
+                $query->where($field, (bool) $value);
+            } elseif (in_array($field, $fillableFields) && $value !== null) {
+                if (in_array($field, $this->likeFields) && is_numeric($value)) {
+                    $query->where($tableName.'.'.$field, 'LIKE', "$value");
+                } elseif (in_array($field, $this->likeFields)) {
+                    $query->where($tableName.'.'.$field, 'LIKE', "%$value%");
+                } elseif (is_array($value)) {
+                    $query->whereIn($field, $value);
+                } else {
+                    $query->where($field, $value);
                 }
-
-                return $builder;
             }
-
-            return $builder;
         }
+
+        return $query;
     }
+}
