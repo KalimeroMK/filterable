@@ -21,12 +21,12 @@ trait Filterable
 
         foreach ($filters as $field => $value) {
             if (in_array($field, $this->boolFields) && $value !== null) {
-                $query->where($field, (bool) $value);
+                $query->where($field, (bool)$value);
             } elseif (in_array($field, $fillableFields) && $value !== null) {
                 if (in_array($field, $this->likeFields) && is_numeric($value)) {
-                    $query->where($tableName.'.'.$field, 'LIKE', "$value");
+                    $query->where($tableName . '.' . $field, 'LIKE', "$value");
                 } elseif (in_array($field, $this->likeFields)) {
-                    $query->where($tableName.'.'.$field, 'LIKE', "%$value%");
+                    $query->where($tableName . '.' . $field, 'LIKE', "%$value%");
                 } elseif (is_array($value)) {
                     $query->whereIn($field, $value);
                 } else {

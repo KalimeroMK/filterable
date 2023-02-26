@@ -10,8 +10,8 @@ trait Sortable
     /**
      * Scope a query to sort results.
      *
-     * @param  Builder  $query
-     * @param  Request  $request
+     * @param Builder $query
+     * @param Request $request
      *
      * @return Builder
      */

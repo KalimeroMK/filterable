@@ -16,8 +16,8 @@ class FilterableServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->publishes([
-            __DIR__.'/Trait/Filterable.php' => app_path('/Trait/Filterable.php'),
-            __DIR__.'/Trait/Sortable.php'   => app_path('/Trait/Sortable.php'),
+            __DIR__ . '/Trait/Filterable.php' => app_path('/Trait/Filterable.php'),
+            __DIR__ . '/Trait/Sortable.php' => app_path('/Trait/Sortable.php'),
         ]);
     }
 
