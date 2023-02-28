@@ -9,19 +9,6 @@ use Illuminate\Support\ServiceProvider;
 class FilterableServiceProvider extends ServiceProvider
 {
     /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register(): void
-    {
-        $this->publishes([
-            __DIR__ . '/Trait/Filterable.php' => app_path('/Trait/Filterable.php'),
-            __DIR__ . '/Trait/Sortable.php' => app_path('/Trait/Sortable.php'),
-        ]);
-    }
-
-    /**
      * Bootstrap services.
      *
      * @return void
@@ -42,9 +29,9 @@ class FilterableServiceProvider extends ServiceProvider
     /**
      * Build the "where like" query for the given attribute and search term.
      *
-     * @param Builder $query
-     * @param string $attribute
-     * @param string $searchTerm
+     * @param  Builder  $query
+     * @param  string  $attribute
+     * @param  string  $searchTerm
      */
     private function buildWhereLikeQuery(Builder $query, string $attribute, string $searchTerm): void
     {
