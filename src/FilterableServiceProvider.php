@@ -1,5 +1,3 @@
-<?php
-
 namespace Kalimeromk\Filterable;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -21,8 +19,6 @@ class FilterableServiceProvider extends ServiceProvider
                     $this->buildWhereLikeQuery($query, $attribute, $searchTerm);
                 }
             });
-
-            return $this;
         });
     }
 
@@ -37,6 +33,7 @@ class FilterableServiceProvider extends ServiceProvider
     {
         if (str_contains($attribute, '.')) {
             [$relationName, $relationAttribute] = explode('.', $attribute);
+
             $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
                 $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
             });
@@ -45,3 +42,4 @@ class FilterableServiceProvider extends ServiceProvider
         }
     }
 }
+
