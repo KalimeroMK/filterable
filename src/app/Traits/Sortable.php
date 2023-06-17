@@ -1,6 +1,6 @@
 <?php
 
-namespace Kalimeromk\Filterable\Trait;
+namespace Kalimeromk\Filterable\app\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
