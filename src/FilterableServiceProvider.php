@@ -1,3 +1,4 @@
+<?php
 namespace Kalimeromk\Filterable;
 
 use Illuminate\Database\Eloquent\Builder;
