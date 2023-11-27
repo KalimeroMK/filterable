@@ -12,35 +12,28 @@ class FilterableServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(): void
+    public function boot()
     {
         Builder::macro('whereLike', function ($attributes, string $searchTerm) {
             $this->where(function (Builder $query) use ($attributes, $searchTerm) {
                 foreach (Arr::wrap($attributes) as $attribute) {
-                    $this->buildWhereLikeQuery($query, $attribute, $searchTerm);
+                    $query->when(
+                        str_contains($attribute, '.'),
+                        function (Builder $query) use ($attribute, $searchTerm) {
+                            [$relationName, $relationAttribute] = explode('.', $attribute);
+                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
+                                $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
+                            });
+                        },
+                        function (Builder $query) use ($attribute, $searchTerm) {
+                            $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
+                        }
+                    );
                 }
             });
+
+            return $this;
         });
-    }
-
-    /**
-     * Build the "where like" query for the given attribute and search term.
-     *
-     * @param  Builder  $query
-     * @param  string  $attribute
-     * @param  string  $searchTerm
-     */
-    private function buildWhereLikeQuery(Builder $query, string $attribute, string $searchTerm): void
-    {
-        if (str_contains($attribute, '.')) {
-            [$relationName, $relationAttribute] = explode('.', $attribute);
-
-            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
-                $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
-            });
-        } else {
-            $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
-        }
     }
 }
 
