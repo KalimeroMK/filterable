@@ -20,7 +20,7 @@ trait Filterable
         return $query;
     }
 
-    protected function applyFieldFilter($query, $tableName, $field, $value)
+    protected function applyFieldFilter($query, string $tableName, string $field, $value): void
     {
         if (in_array($field, $this->likeFields ?? [])) {
             $query->where($tableName . '.' . $field, 'LIKE', "%$value%");

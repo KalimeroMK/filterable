@@ -16,7 +16,7 @@ class FilterableTest extends TestCase
     }
 
     /** @test */
-    public function it_can_filter_records_using_relationships()
+    public function it_can_filter_records_using_relationships(): void
     {
         // Create users table
         DB::statement('CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)');
@@ -38,7 +38,7 @@ class FilterableTest extends TestCase
         ]);
 
         // Dynamically define the Post model
-        $postModel = new class extends Model {
+        new class extends Model {
             protected $table = 'posts';
             protected $fillable = ['user_id', 'title', 'content'];
 
