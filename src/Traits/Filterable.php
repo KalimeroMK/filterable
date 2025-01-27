@@ -11,8 +11,10 @@ trait Filterable
 
         foreach ($filters as $field => $value) {
             if (in_array($field, $this->boolFields ?? []) && $value !== null) {
-                $query->where($field, (bool)$value);
+                // Boolean filtering
+                $query->where($field, (bool) $value);
             } elseif (in_array($field, $fillableFields) && $value !== null) {
+                // Apply filter based on field type
                 $this->applyFieldFilter($query, $tableName, $field, $value);
             }
         }
@@ -23,11 +25,20 @@ trait Filterable
     protected function applyFieldFilter($query, string $tableName, string $field, $value): void
     {
         if (in_array($field, $this->likeFields ?? [])) {
+            // LIKE filtering
             $query->where($tableName . '.' . $field, 'LIKE', "%$value%");
         } elseif (is_array($value)) {
-            $query->whereIn($field, $value);
+            // Automatically use whereIn for array values
+            $query->whereIn($tableName . '.' . $field, $value);
+        } elseif (str_ends_with($field, '_min')) {
+            // Use >= for minimum values
+            $query->where($tableName . '.' . rtrim($field, '_min'), '>=', $value);
+        } elseif (str_ends_with($field, '_max')) {
+            // Use <= for maximum values
+            $query->where($tableName . '.' . rtrim($field, '_max'), '<=', $value);
         } else {
-            $query->where($field, $value);
+            // Default equality filter
+            $query->where($tableName . '.' . $field, $value);
         }
     }
 }

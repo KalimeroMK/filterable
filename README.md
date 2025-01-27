@@ -1,4 +1,3 @@
-
 # Filterable - Laravel Package for Dynamic Filtering
 
 **Filterable** is a Laravel package designed to simplify dynamic filtering and searching across models and their relationships, eliminating the need for repetitive query code. It provides an easy-to-use trait and macros for building powerful, dynamic query filters.
@@ -54,7 +53,7 @@ This will return all users who have posts with a title or content containing the
 
 ### 2. Using the `Filterable` Trait
 
-The `Filterable` trait allows you to dynamically filter a model based on specific criteria, including `LIKE` queries, boolean fields, and `whereIn` filters.
+The `Filterable` trait allows you to dynamically filter a model based on specific criteria, including `LIKE` queries, boolean fields, and `whereIn` filters, as well as range filters like `_min` and `_max`.
 
 #### Setup:
 Add the `Filterable` trait to your model:
@@ -87,7 +86,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $filters = $request->only(['name', 'email', 'is_active']);
+        $filters = $request->only(['name', 'email', 'is_active', 'age_min', 'age_max']);
 
         $users = User::filter($filters)->get();
 
@@ -99,10 +98,10 @@ class UserController extends Controller
 #### Example API Request:
 - **Request:**
   ```
-  GET /users?name=Jane&is_active=true
+  GET /users?name=Jane&is_active=true&age_min=25&age_max=35
   ```
 - **Result:**
-  Returns all active users (`is_active = true`) whose name contains "Jane".
+  Returns all active users (`is_active = true`) whose name contains "Jane" and whose age is between 25 and 35.
 
 ---
 
