@@ -1,8 +1,9 @@
 {
     "name": "kalimeromk/filterable",
-    "description": "Address commonly face the problem of adding repetitive filtering code",
+    "description": "A Laravel package that simplifies dynamic filtering and searching across models and their relationships, eliminating repetitive query code.",
     "type": "package",
     "license": "MIT",
+    "version": "1.0.0",
     "keywords": [
         "laravel"
     ],
@@ -36,6 +37,9 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "^6.0"
-    }
+        "orchestra/testbench": "^9.0",
+        "phpunit/phpunit": "^11.0",
+        "rector/rector": "2.0.7"
+    },
+    "minimum-stability": "dev"
 }
