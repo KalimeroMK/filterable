@@ -13,27 +13,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: '8.1'
-            laravel: '10.*'
-            testbench: '8.*'
-          - php: '8.2'
-            laravel: '10.*'
-            testbench: '8.*'
-          - php: '8.2'
-            laravel: '11.*'
-            testbench: '9.*'
-          - php: '8.3'
-            laravel: '11.*'
-            testbench: '9.*'
-          - php: '8.3'
-            laravel: '12.*'
-            testbench: '10.*'
-          - php: '8.4'
-            laravel: '12.*'
-            testbench: '10.*'
-          - php: '8.5'
-            laravel: '12.*'
-            testbench: '10.*'
+          - { php: '8.1', laravel: '10.*', testbench: '8.*' }
+          - { php: '8.2', laravel: '10.*', testbench: '8.*' }
+          - { php: '8.2', laravel: '11.*', testbench: '9.*' }
+          - { php: '8.3', laravel: '11.*', testbench: '9.*' }
+          - { php: '8.3', laravel: '12.*', testbench: '10.*' }
+          - { php: '8.4', laravel: '12.*', testbench: '10.*' }
+          - { php: '8.5', laravel: '12.*', testbench: '10.*' }
+          - { php: '8.3', laravel: '13.*', testbench: '11.*' }
+          - { php: '8.4', laravel: '13.*', testbench: '11.*' }
+          - { php: '8.5', laravel: '13.*', testbench: '11.*' }
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
@@ -51,7 +40,7 @@ jobs:
       # test container and we still want to verify the package works on them, so the
       # block is lifted here only - it is deliberately not set in composer.json.
       - name: Allow installing end-of-life framework releases
-        if: matrix.laravel != '12.*'
+        if: matrix.laravel == '10.*' || matrix.laravel == '11.*'
         run: composer config audit.block-insecure false
 
       - name: Install dependencies
