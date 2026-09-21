@@ -1,25 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kalimeromk\Filterable;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
-class FilterableMacros
+final class FilterableMacros
 {
     public static function register(): void
     {
-        Builder::macro('whereLike', function ($attributes, string $searchTerm) {
-            return $this->where(function (Builder $query) use ($attributes, $searchTerm): void {
+        if (Builder::hasGlobalMacro('whereLike')) {
+            return;
+        }
+
+        Builder::macro('whereLike', function (array|string $attributes, string $searchTerm): Builder {
+            /** @var Builder $this */
+            return $this->where(static function (Builder $query) use ($attributes, $searchTerm): void {
                 foreach (Arr::wrap($attributes) as $attribute) {
-                    if (str_contains($attribute, '.')) {
-                        [$relationName, $relationAttribute] = explode('.', $attribute);
-                        $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm): void {
-                            $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
-                        });
-                    } else {
-                        $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
+                    $attribute = (string) $attribute;
+
+                    if (!Str::contains($attribute, '.')) {
+                        $query->orWhere($attribute, 'LIKE', '%' . $searchTerm . '%');
+
+                        continue;
                     }
+
+                    $relation = Str::beforeLast($attribute, '.');
+                    $column = Str::afterLast($attribute, '.');
+
+                    $query->orWhereHas($relation, static function (Builder $query) use ($column, $searchTerm): void {
+                        $query->where($column, 'LIKE', '%' . $searchTerm . '%');
+                    });
                 }
             });
         });
