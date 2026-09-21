@@ -1,11 +1,13 @@
 {
     "name": "kalimeromk/filterable",
     "description": "A Laravel package that simplifies dynamic filtering and searching across models and their relationships, eliminating repetitive query code.",
-    "type": "package",
+    "type": "library",
     "license": "MIT",
-    "version": "1.0.0",
     "keywords": [
-        "laravel"
+        "laravel",
+        "eloquent",
+        "filter",
+        "query"
     ],
     "authors": [
         {
@@ -14,7 +16,14 @@
         }
     ],
     "require": {
-        "php": ">=8.0"
+        "php": "^8.1",
+        "illuminate/database": "^10.0|^11.0|^12.0|^13.0",
+        "illuminate/support": "^10.0|^11.0|^12.0|^13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
+        "phpunit/phpunit": "^10.5|^11.0",
+        "rector/rector": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -27,7 +36,8 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "phpunit",
+        "rector": "rector process --dry-run"
     },
     "extra": {
         "laravel": {
@@ -36,10 +46,8 @@
             ]
         }
     },
-    "require-dev": {
-        "orchestra/testbench": "^9.0",
-        "phpunit/phpunit": "^11.0",
-        "rector/rector": "2.0.7"
+    "config": {
+        "sort-packages": true
     },
-    "minimum-stability": "dev"
+    "prefer-stable": true
 }

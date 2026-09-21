@@ -1,22 +1,15 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Kalimeromk\Filterable;
 
 use Illuminate\Support\ServiceProvider;
 
-class FilterableServiceProvider extends ServiceProvider
+final class FilterableServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap services.
-     */
     public function boot(): void
     {
         FilterableMacros::register();
-
-    }
-
-    public function register(): void
-    {
-        //
     }
 }
-
