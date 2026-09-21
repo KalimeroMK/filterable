@@ -8,8 +8,8 @@ building powerful, dynamic query filters.
 
 ## Requirements
 
-- PHP 8.2+
-- Laravel 11 or 12
+- PHP 8.1 – 8.5
+- Laravel 10, 11 or 12
 
 ## Installation
 

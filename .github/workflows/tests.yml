@@ -13,6 +13,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - php: '8.1'
+            laravel: '10.*'
+            testbench: '8.*'
+          - php: '8.2'
+            laravel: '10.*'
+            testbench: '8.*'
           - php: '8.2'
             laravel: '11.*'
             testbench: '9.*'
@@ -23,6 +29,9 @@ jobs:
             laravel: '12.*'
             testbench: '10.*'
           - php: '8.4'
+            laravel: '12.*'
+            testbench: '10.*'
+          - php: '8.5'
             laravel: '12.*'
             testbench: '10.*'
 
@@ -37,19 +46,20 @@ jobs:
           extensions: pdo, sqlite, pdo_sqlite
           coverage: none
 
-      # Laravel 11 is past its security-support window, so every release carries an
-      # advisory and Composer refuses to install it. This is a throwaway test container
-      # and we still want to verify the package works there, so the block is lifted here
-      # only - it is deliberately not set in composer.json.
+      # Laravel 10 and 11 are past their security-support window, so every release
+      # carries an advisory and Composer refuses to install it. This is a throwaway
+      # test container and we still want to verify the package works on them, so the
+      # block is lifted here only - it is deliberately not set in composer.json.
       - name: Allow installing end-of-life framework releases
-        if: matrix.laravel == '11.*'
+        if: matrix.laravel != '12.*'
         run: composer config audit.block-insecure false
 
       - name: Install dependencies
         run: |
           composer require --no-update --no-interaction \
             "illuminate/database:${{ matrix.laravel }}" \
-            "illuminate/support:${{ matrix.laravel }}" \
+            "illuminate/support:${{ matrix.laravel }}"
+          composer require --no-update --no-interaction --dev \
             "orchestra/testbench:${{ matrix.testbench }}"
           composer update --prefer-dist --no-interaction --no-progress
 
